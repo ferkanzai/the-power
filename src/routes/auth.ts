@@ -1,5 +1,6 @@
 import { compareSync, hashSync } from "bcrypt";
 import { Router } from "express";
+import { SignJWT } from "jose";
 import User from "../models/User";
 import {
   creatRandomAccountNumber,
@@ -7,10 +8,8 @@ import {
   generateRandomPassword,
   isEmptyBody,
   sanitizeUser,
+  secret,
 } from "../utils";
-import { SignJWT } from "jose";
-
-const secret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET);
 
 const router = Router();
 

@@ -61,9 +61,12 @@ export const sanitizeUser = (
       },
       never
     >
-) => ({
-  accountNumber: user.accountNumber,
-  balance: user.balance,
-  firstName: user.firstName,
-  lastName: user.lastName,
-} as const);
+) =>
+  ({
+    accountNumber: user.accountNumber,
+    balance: user.balance,
+    firstName: user.firstName,
+    lastName: user.lastName,
+  } as const);
+
+export const secret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET);
