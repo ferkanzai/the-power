@@ -1,18 +1,17 @@
 import { Schema, model } from "mongoose";
 
-export interface User extends UserSignup {
+export interface User {
   balance: number;
-}
-
-export type UserSignup = {
   accountNumber: number;
   firstName: string;
-  initialBalance: number; 
+  initialBalance: number;
   lastName: string;
   password: string;
 }
 
-const UserSchema = new Schema<User>({
+export interface UserModel extends User, Document {}
+
+export const UserSchema = new Schema({
   firstName: {
     type: String,
     required: true,
@@ -35,10 +34,15 @@ const UserSchema = new Schema<User>({
   },
   balance: {
     type: Number,
-    default: function (this: User) {
+    default: function (this: UserModel) {
       return this.initialBalance;
-    }
-  }
+    },
+  },
 });
 
-export const User = model("User", UserSchema);
+UserSchema.pre("findOne", function (next) {
+  this.select("-__v -_id");
+  next();
+});
+
+export default model<UserModel>("User", UserSchema);

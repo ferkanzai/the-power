@@ -1,3 +1,5 @@
+import { Document, Types } from "mongoose";
+import { UserModel } from "../models/User";
 import { ErrnoException } from "../types/app";
 
 export const isEmptyBody = (body: Record<string, unknown>) => {
@@ -37,7 +39,7 @@ const errors = {
     message: "Unauthorized",
     name: "UnauthorizedError",
   },
-}
+};
 
 type errorNames = keyof typeof errors;
 
@@ -50,3 +52,18 @@ export const createCustomError = (name: errorNames, message?: string) => {
 
   return error as ErrnoException;
 };
+
+export const sanitizeUser = (
+  user: Document<unknown, {}, UserModel> &
+    Omit<
+      UserModel & {
+        _id: Types.ObjectId;
+      },
+      never
+    >
+) => ({
+  accountNumber: user.accountNumber,
+  balance: user.balance,
+  firstName: user.firstName,
+  lastName: user.lastName,
+} as const);

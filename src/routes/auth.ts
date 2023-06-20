@@ -1,34 +1,35 @@
+import { compareSync, hashSync } from "bcrypt";
 import { Router } from "express";
+import User from "../models/User";
 import {
   creatRandomAccountNumber,
+  createCustomError,
   generateRandomPassword,
   isEmptyBody,
+  sanitizeUser,
 } from "../utils";
-import { hashSync } from "bcrypt";
-import { User, UserSignup } from "../models/User";
+import { SignJWT } from "jose";
+
+const secret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET);
 
 const router = Router();
 
 router.post("/signup", async (req, res, next) => {
   try {
     if (isEmptyBody(req.body)) {
-      res.status(400).json({
-        message: "Body can not be empty!",
-      });
-      return;
+      createCustomError("BadRequestError", "Body can not be empty!");
     }
 
     if (!req.body.firstName || !req.body.lastName || !req.body.initialBalance) {
-      res.status(400).json({
-        message:
-          "First name, last name and initial balance are mandatory fields",
-      });
-      return;
+      throw createCustomError(
+        "BadRequestError",
+        "First name, last name and initial balance are mandatory fields"
+      );
     }
 
     const password = generateRandomPassword();
 
-    const newUser: UserSignup = {
+    const newUser = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       initialBalance: req.body.initialBalance,
@@ -39,13 +40,58 @@ router.post("/signup", async (req, res, next) => {
     const result = await User.create(newUser);
 
     res.status(201).json({
-      status: "ok",
+      success: true,
       data: {
-        accountNumber: result.accountNumber,
+        ...sanitizeUser(result),
         password,
-        lastName: result.lastName,
-        firstName: result.firstName,
-        initialBalance: result.initialBalance,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/signin", async (req, res, next) => {
+  try {
+    if (isEmptyBody(req.body)) {
+      throw createCustomError("BadRequestError", "Body can not be empty!");
+    }
+
+    if (!req.body.accountNumber || !req.body.password) {
+      throw createCustomError(
+        "BadRequestError",
+        "Account number and password are mandatory fields"
+      );
+    }
+
+    const user = await User.findOne({
+      accountNumber: req.body.accountNumber,
+    });
+
+    if (!user) {
+      throw createCustomError("NotFoundError", "Account not found");
+    }
+
+    const checkPassword = compareSync(req.body.password, user.password);
+
+    if (!checkPassword) {
+      throw createCustomError("UnauthorizedError");
+    }
+
+    const sanitizedUser = sanitizeUser(user);
+
+    const token = await new SignJWT({ user: sanitizedUser })
+      .setProtectedHeader({ alg: "HS256", typ: "JWT" })
+      .setIssuedAt()
+      .setIssuer("fercarmona.dev")
+      .setExpirationTime("15m")
+      .sign(secret);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        ...sanitizedUser,
+        token: `Bearer ${token}`,
       },
     });
   } catch (error) {

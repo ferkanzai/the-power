@@ -1,6 +1,6 @@
 import "dotenv/config";
 import app from "./app";
-import "./db";
+import "./config/db";
 
 const requiredEnvVars = ["ACCESS_TOKEN_SECRET", "DB_HOST"];
 
