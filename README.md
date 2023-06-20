@@ -21,10 +21,10 @@
   1903578765,3458907654,100,12-06-21 11:00:12AM
   ```
 - [ ] Bank admin should be able to see how much money bank has made from transactions through a separate route, but you can't store that information in an account. We would like you to use mongo's aggregation framework to calculate money made by the bank.
-- [ ] Make sure you handle all the edge cases and error scenarios for example:-
-- [ ] What should happen when the user has zero balance and user tries to send money.
-- [ ] User tries to send money which is greater than their bank balance.
-- [ ] User tries to send money to someone who is no longer has them as their connection.
+- [ ] Make sure you handle all the edge cases and error scenarios for example:
+  - [ ] What should happen when the user has zero balance and user tries to send money.
+  - [ ] User tries to send money which is greater than their bank balance.
+  - [ ] User tries to send money to someone who is no longer has them as their connection.
 
 **Note:**
 User Should only be able to send money when both users are each others connection, for example User A should have B as their connection and User B should have User A as their connection. One sided connection won't work.
