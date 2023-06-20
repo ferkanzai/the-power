@@ -1,25 +1,26 @@
 import { compareSync, hashSync } from "bcrypt";
 import { Router } from "express";
 import { SignJWT } from "jose";
+import { checkBody } from "../middlewares/utils";
 import User from "../models/User";
 import {
-  generateRandomAccountNumber,
   createCustomError,
+  generateRandomAccountNumber,
   generateRandomPassword,
-  isEmptyBody,
   sanitizeUser,
   secret,
 } from "../utils";
 
 const router = Router();
 
-router.post("/signup", async (req, res, next) => {
+router.post("/signup", checkBody, async (req, res, next) => {
   try {
-    if (isEmptyBody(req.body)) {
-      createCustomError("BadRequestError", "Body can not be empty!");
-    }
-
-    if (!req.body.age || !req.body.firstName || !req.body.lastName || !req.body.initialBalance) {
+    if (
+      !req.body.age ||
+      !req.body.firstName ||
+      !req.body.lastName ||
+      !req.body.initialBalance
+    ) {
       throw createCustomError(
         "BadRequestError",
         "Age, first name, last name and initial balance are mandatory fields"
@@ -51,12 +52,8 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-router.post("/signin", async (req, res, next) => {
+router.post("/signin", checkBody, async (req, res, next) => {
   try {
-    if (isEmptyBody(req.body)) {
-      throw createCustomError("BadRequestError", "Body can not be empty!");
-    }
-
     if (!req.body.accountNumber || !req.body.password) {
       throw createCustomError(
         "BadRequestError",

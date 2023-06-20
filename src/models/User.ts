@@ -1,12 +1,12 @@
 import { JWTPayload } from "jose";
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 export interface User {
   accountNumber: number;
   age: number;
   balance: number;
-  connections: Schema.Types.ObjectId[];
-  connectionsRequests: Schema.Types.ObjectId[];
+  connections: Types.ObjectId[];
+  connectionsRequests: Types.ObjectId[];
   firstName: string;
   initialBalance: number;
   lastName: string;

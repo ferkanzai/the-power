@@ -2,9 +2,10 @@ import type { NextFunction, Request, Response } from "express";
 import { errors, jwtVerify } from "jose";
 import { type PayloadWithUser } from "../models/User";
 import { createCustomError, secret } from "../utils";
+import { RequestWithAccountNumber } from "../types/app";
 
 export const isAuthenticated = async (
-  req: Request,
+  req: RequestWithAccountNumber,
   _res: Response,
   next: NextFunction
 ) => {
@@ -15,10 +16,14 @@ export const isAuthenticated = async (
       throw createCustomError("UnauthorizedError", "Token is required");
     }
 
-    await jwtVerify(token, secret, {
+    const { payload } = await jwtVerify(token, secret, {
       issuer: "fercarmona.dev",
       maxTokenAge: "15m",
     });
+
+    const { user } = payload as PayloadWithUser;
+
+    req.accountNumber = user.accountNumber;
 
     next();
   } catch (error) {

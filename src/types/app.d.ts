@@ -7,3 +7,7 @@ export type ErrnoException = {
 export interface NextFunctionWithErrno extends NextFunction {
   (err?: ErrnoException): void;
 }
+
+export interface RequestWithAccountNumber extends Request {
+  accountNumber?: number;
+}

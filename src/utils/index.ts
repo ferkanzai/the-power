@@ -39,6 +39,11 @@ const errors = {
     message: "Unauthorized",
     name: "UnauthorizedError",
   },
+  ForbiddenError: {
+    code: 403,
+    message: "Forbidden",
+    name: "ForbiddenError",
+  },
 };
 
 type errorNames = keyof typeof errors;
