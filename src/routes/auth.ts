@@ -19,21 +19,22 @@ router.post("/signup", async (req, res, next) => {
       createCustomError("BadRequestError", "Body can not be empty!");
     }
 
-    if (!req.body.firstName || !req.body.lastName || !req.body.initialBalance) {
+    if (!req.body.age || !req.body.firstName || !req.body.lastName || !req.body.initialBalance) {
       throw createCustomError(
         "BadRequestError",
-        "First name, last name and initial balance are mandatory fields"
+        "Age, first name, last name and initial balance are mandatory fields"
       );
     }
 
     const password = generateRandomPassword();
 
     const newUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      initialBalance: req.body.initialBalance,
-      password: hashSync(password, 10),
       accountNumber: generateRandomAccountNumber(),
+      age: req.body.age,
+      firstName: req.body.firstName,
+      initialBalance: req.body.initialBalance,
+      lastName: req.body.lastName,
+      password: hashSync(password, 10),
     };
 
     const result = await User.create(newUser);

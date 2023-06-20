@@ -64,6 +64,7 @@ export const sanitizeUser = (
 ): SanitizedUser =>
   ({
     accountNumber: user.accountNumber,
+    age: user.age,
     balance: user.balance,
     firstName: user.firstName,
     lastName: user.lastName,

@@ -7,9 +7,9 @@
   - [x] Due to security reasons you will create a 14 digit user password which contains number, letters and special characters.
 - [ ] Users should only be able to make transactions or add connections only after login.
 - [ ] Users should be able to send and approve connection requests.
-- [ ] Except the create user and login route, all other routes should use authentication, use can use bearer tokens which are at most valid for 15 mins.
+- [x] Except the create user and login route, all other routes should use authentication, use can use bearer tokens which are at most valid for 15 mins.
 - [ ] Users should have the ability to add connections using someone's bank account number.
-- [ ] User should be able to see the name, age and bank account number of all their connections in a list.
+- [x] User should be able to see the name, age and bank account number of all their connections in a list.
 - [ ] Users can remove a connection from their account.
 - [ ] Users can send and receive money to accounts which are there connection. Each transaction should be in the database.
 - [ ] Bank makes 1% on each transaction below 1,000 and 0.5% every transasction above 1,000.

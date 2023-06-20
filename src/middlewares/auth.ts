@@ -1,9 +1,7 @@
-import { NextFunction, Request, Response } from "express";
-import { JWTPayload, errors, jwtVerify } from "jose";
-import { SanitizedUser } from "../models/User";
+import type { NextFunction, Request, Response } from "express";
+import { errors, jwtVerify } from "jose";
+import { type PayloadWithUser } from "../models/User";
 import { createCustomError, secret } from "../utils";
-
-type PayloadWithUser = JWTPayload & { user: SanitizedUser };
 
 export const isAuthenticated = async (
   req: Request,
@@ -46,8 +44,6 @@ export const isAdmin = async (
     });
 
     const { user } = payload as PayloadWithUser;
-
-    console.log({ user })
 
     if (!user.roles?.includes("admin")) {
       throw createCustomError("UnauthorizedError", "Admin role required");
