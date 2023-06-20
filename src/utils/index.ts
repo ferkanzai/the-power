@@ -1,5 +1,5 @@
 import { Document, Types } from "mongoose";
-import { UserModel } from "../models/User";
+import { SanitizedUser, UserModel } from "../models/User";
 import { ErrnoException } from "../types/app";
 
 export const isEmptyBody = (body: Record<string, unknown>) => {
@@ -61,12 +61,13 @@ export const sanitizeUser = (
       },
       never
     >
-) =>
+): SanitizedUser =>
   ({
     accountNumber: user.accountNumber,
     balance: user.balance,
     firstName: user.firstName,
     lastName: user.lastName,
+    roles: user.roles,
   } as const);
 
 export const secret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET);

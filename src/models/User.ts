@@ -7,7 +7,12 @@ export interface User {
   initialBalance: number;
   lastName: string;
   password: string;
+  roles: Roles[]
 }
+
+type Roles = 'admin' | 'user'
+
+export type SanitizedUser = Omit<User, 'password' | 'initialBalance'>
 
 export interface UserModel extends User, Document {}
 
@@ -38,6 +43,11 @@ export const UserSchema = new Schema({
       return this.initialBalance;
     },
   },
+  roles: {
+    type: Array,
+    of: String,
+    default: ['user']
+  }
 });
 
 UserSchema.pre("findOne", function (next) {
