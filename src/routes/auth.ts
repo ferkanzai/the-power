@@ -3,7 +3,7 @@ import { Router } from "express";
 import { SignJWT } from "jose";
 import User from "../models/User";
 import {
-  creatRandomAccountNumber,
+  generateRandomAccountNumber,
   createCustomError,
   generateRandomPassword,
   isEmptyBody,
@@ -33,7 +33,7 @@ router.post("/signup", async (req, res, next) => {
       lastName: req.body.lastName,
       initialBalance: req.body.initialBalance,
       password: hashSync(password, 10),
-      accountNumber: creatRandomAccountNumber(),
+      accountNumber: generateRandomAccountNumber(),
     };
 
     const result = await User.create(newUser);

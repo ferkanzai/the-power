@@ -6,7 +6,7 @@ export const isEmptyBody = (body: Record<string, unknown>) => {
   return Object.keys(body).length === 0;
 };
 
-export const creatRandomAccountNumber = () => {
+export const generateRandomAccountNumber = () => {
   return Math.floor(Math.random() * 10000000000);
 };
 
