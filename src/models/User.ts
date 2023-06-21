@@ -6,7 +6,7 @@ export interface User {
   age: number;
   balance: number;
   connections: Types.ObjectId[];
-  connectionsRequests: Types.ObjectId[];
+  requests: Types.ObjectId[];
   firstName: string;
   initialBalance: number;
   lastName: string;
@@ -14,11 +14,16 @@ export interface User {
   roles: Roles[];
 }
 
+export type UserRequestWithAccountNumber = {
+  accountNumber: number;
+  _id: Types.ObjectId;
+};
+
 type Roles = "admin" | "user";
 
 export type SanitizedUser = Omit<
   User,
-  "password" | "initialBalance" | "connections" | "connectionsRequests"
+  "password" | "initialBalance" | "connections" | "requests"
 >;
 
 export type UserConnections = Pick<User, "connections">;
@@ -70,7 +75,7 @@ export const UserSchema = new Schema<UserModel>({
     ref: "User",
     default: [],
   },
-  connectionsRequests: {
+  requests: {
     type: Schema.Types.Mixed,
     of: Schema.Types.ObjectId,
     ref: "User",

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { isAlreadyConnection } from "../middlewares/connections";
 import { checkBody } from "../middlewares/utils";
-import User from "../models/User";
+import User, { UserRequestWithAccountNumber } from "../models/User";
 import { RequestWithAccountNumber } from "../types/app";
 import { createCustomError } from "../utils";
 
@@ -36,10 +36,10 @@ router.post(
   isAlreadyConnection,
   async (req: RequestWithAccountNumber, res, next) => {
     try {
-      const { accountNumberToAdd } = req.body;
+      const { accountNumber: accountNumberToAdd } = req.body;
       const { accountNumber } = req;
 
-      if (!req.body.accountNumberToAdd) {
+      if (!accountNumberToAdd) {
         throw createCustomError(
           "BadRequestError",
           "Account number to add is a mandatory field"
@@ -64,12 +64,12 @@ router.post(
         { accountNumber },
         {
           $addToSet: {
-            connectionsRequests: documentToAdd?._id,
+            requests: documentToAdd?._id,
           },
         },
         { new: true }
       ).populate(
-        "connectionsRequests",
+        "requests",
         "-_id age firstName lastName accountNumber",
         "User"
       );
@@ -81,9 +81,80 @@ router.post(
       res.status(200).json({
         success: true,
         data: {
-          requests: result.connectionsRequests,
+          requests: result.requests,
         },
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  "/accept",
+  checkBody,
+  isAlreadyConnection,
+  async (req: RequestWithAccountNumber, res, next) => {
+    try {
+      const { accountNumber: accountNumberToAccept } = req.body;
+      const { accountNumber } = req;
+
+      if (!accountNumberToAccept) {
+        throw createCustomError(
+          "BadRequestError",
+          "Account number to accept is a mandatory field"
+        );
+      }
+
+      if (Number(accountNumber) === Number(accountNumberToAccept)) {
+        throw createCustomError(
+          "ForbiddenError",
+          "You can not accept yourself as a connection"
+        );
+      }
+
+      const accountToAddId = await User.findOne(
+        { accountNumber: accountNumberToAccept },
+        { _id: 1 }
+      );
+
+      const requests: { requests: UserRequestWithAccountNumber[] } | null =
+        await User.findOne(
+          { accountNumber, requests: { $in: [accountToAddId?._id] } },
+          { requests: 1, _id: 0 }
+        ).populate("requests", "accountNumber -_id", "User", {
+          accountNumber: accountNumberToAccept,
+        });
+
+      if (!requests) {
+        throw createCustomError(
+          "NotFoundError",
+          "No requests with this account number"
+        );
+      }
+
+      const data = await User.findOneAndUpdate(
+        { accountNumber },
+        {
+          $addToSet: {
+            connections: accountToAddId?._id,
+          },
+          $pull: {
+            requests: accountToAddId?._id,
+          },
+        },
+        { new: true }
+      ).populate(
+        "connections",
+        "-_id age firstName lastName accountNumber",
+        "User"
+      );
+
+      console.log(data);
+
+      res
+        .status(200)
+        .json({ success: true, data: { connections: data?.connections } });
     } catch (error) {
       next(error);
     }

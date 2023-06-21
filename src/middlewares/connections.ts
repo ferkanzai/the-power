@@ -10,7 +10,7 @@ export const isAlreadyConnection = async (
 ) => {
   try {
     const { accountNumber } = req;
-    const { accountNumberToAdd } = req.body;
+    const { accountNumber: accountNumberToAdd } = req.body;
 
     const result = await User.findOne({ accountNumber }, { connections: 1 });
     const resultToAdd = await User.findOne(
