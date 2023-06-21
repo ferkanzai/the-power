@@ -21,10 +21,14 @@ export const canMakeTransaction = async (
     const balance = user.balance;
     const commision = calculateCommission(amount);
 
-    if (balance + commision < amount) {
+    if (balance < amount + commision) {
       throw createCustomError(
         "ForbiddenError",
-        `You don't have enough money to make this transaction. Your balance is ${balance.toFixed(2)}`
+        `You don't have enough money to make this transaction. Your balance is ${balance.toFixed(
+          2
+        )}. You need ${(amount + commision).toFixed(
+          2
+        )} to make this transaction.`
       );
     }
 

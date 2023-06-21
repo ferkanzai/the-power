@@ -112,5 +112,5 @@ export const saveTransactionToFile = (transaction: TransactionWithAccounts) => {
 export const calculateCommission = (amount: number) => {
   const commission = amount < 1000 ? amount * 0.01 : amount * 0.005;
 
-  return commission.toFixed(2);
+  return Number(commission.toFixed(2));
 };

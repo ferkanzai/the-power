@@ -20,7 +20,7 @@
   1903578765,3458907654,100,12-06-21 11:00:12AM
   1903578765,3458907654,100,12-06-21 11:00:12AM
   ```
-- [ ] Bank admin should be able to see how much money bank has made from transactions through a separate route, but you can't store that information in an account. We would like you to use mongo's aggregation framework to calculate money made by the bank.
+- [x] Bank admin should be able to see how much money bank has made from transactions through a separate route, but you can't store that information in an account. We would like you to use mongo's aggregation framework to calculate money made by the bank.
 - [x] Make sure you handle all the edge cases and error scenarios for example:
   - [x] What should happen when the user has zero balance and user tries to send money.
   - [x] User tries to send money which is greater than their bank balance.

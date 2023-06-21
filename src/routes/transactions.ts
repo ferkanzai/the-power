@@ -6,6 +6,7 @@ import Transaction from "../models/Transaction";
 import User from "../models/User";
 import { RequestWithAccountNumber } from "../types/app";
 import { createCustomError, saveTransactionToFile } from "../utils";
+import { isAdmin } from "../middlewares/auth";
 
 const router = Router();
 
@@ -121,6 +122,31 @@ router.get("/sent", async (req: RequestWithAccountNumber, res, next) => {
       success: true,
       data: {
         transactions,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/commisions", isAdmin, async (_req, res, next) => {
+  try {
+    const commisions = await Transaction.aggregate(
+      [
+        {
+          $group: {
+            _id: null,
+            totalCommision: { $sum: "$commision" },
+          },
+        },
+      ],
+      { _id: 0 }
+    );
+
+    res.status(200).json({
+      success: true,
+      data: {
+        totalCommision: commisions[0].totalCommision,
       },
     });
   } catch (error) {
