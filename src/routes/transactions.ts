@@ -66,4 +66,66 @@ router.post(
   }
 );
 
+router.get("/received", async (req: RequestWithAccountNumber, res, next) => {
+  try {
+    const { accountNumber } = req;
+
+    const user = await User.findOne({ accountNumber }, { _id: 1 });
+
+    const transactions = await Transaction.find(
+      {
+        receiver: user?._id,
+      },
+      { _id: 0, __v: 0, updatedAt: 0, commision: 0 }
+    ).populate("sender", "-_id firstName lastName accountNumber");
+
+    if (!transactions) {
+      throw createCustomError(
+        "NotFoundError",
+        "No transactions found received by this account"
+      );
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        transactions,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/sent", async (req: RequestWithAccountNumber, res, next) => {
+  try {
+    const { accountNumber } = req;
+
+    const user = await User.findOne({ accountNumber }, { _id: 1 });
+
+    const transactions = await Transaction.find(
+      {
+        sender: user?._id,
+      },
+      { _id: 0, __v: 0, updatedAt: 0, commision: 0 }
+    ).populate("receiver", "-_id firstName lastName accountNumber");
+
+    if (!transactions) {
+      throw createCustomError(
+        "NotFoundError",
+        "No transactions found received by this account"
+      );
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        transactions,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

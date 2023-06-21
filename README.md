@@ -13,7 +13,7 @@
 - [x] Users can remove a connection from their account.
 - [x] Users can send and receive money to accounts which are there connection. Each transaction should be in the database.
 - [x] Bank makes 1% on each transaction below 1,000 and 0.5% every transasction above 1,000.
-- [ ] Users should be able to see there past transactions.
+- [x] Users should be able to see there past transactions.
 - [x] Each transction should also be saved in a .csv file in the file system with following format:
   ```
   Sender,Receiver,Amount,TimeStamp
