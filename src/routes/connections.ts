@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isAlreadyConnection } from "../middlewares/connections";
+import { isConnection } from "../middlewares/connections";
 import { checkBody } from "../middlewares/utils";
 import User from "../models/User";
 import { RequestWithAccountNumber } from "../types/app";
@@ -33,7 +33,7 @@ router.get("/all", async (req: RequestWithAccountNumber, res, next) => {
 router.post(
   "/add",
   checkBody,
-  isAlreadyConnection,
+  isConnection,
   async (req: RequestWithAccountNumber, res, next) => {
     try {
       const { accountNumber: accountNumberToAdd } = req.body;
@@ -46,13 +46,6 @@ router.post(
         );
       }
 
-      if (Number(accountNumber) === Number(accountNumberToAdd)) {
-        throw createCustomError(
-          "ForbiddenError",
-          "You can not add yourself as a connection"
-        );
-      }
-
       const documentToAdd = await User.findOne({ accountNumber }, { _id: 1 });
 
       const result = await User.findOneAndUpdate(
@@ -61,12 +54,7 @@ router.post(
           $addToSet: {
             requests: documentToAdd?._id,
           },
-        },
-        { new: true }
-      ).populate(
-        "requests",
-        "-_id age firstName lastName accountNumber",
-        "User"
+        }
       );
 
       if (!result || !documentToAdd) {
@@ -83,7 +71,7 @@ router.post(
 router.post(
   "/accept",
   checkBody,
-  isAlreadyConnection,
+  isConnection,
   async (req: RequestWithAccountNumber, res, next) => {
     try {
       const { accountNumber: accountNumberToAccept } = req.body;
@@ -93,13 +81,6 @@ router.post(
         throw createCustomError(
           "BadRequestError",
           "Account number to accept is a mandatory field"
-        );
-      }
-
-      if (Number(accountNumber) === Number(accountNumberToAccept)) {
-        throw createCustomError(
-          "ForbiddenError",
-          "You can not accept yourself as a connection"
         );
       }
 
@@ -117,12 +98,7 @@ router.post(
           $pull: {
             requests: accountToAddId?._id,
           },
-        },
-        { new: true, projection: { requests: 1, _id: 0 } }
-      ).populate(
-        "connections",
-        "-_id age firstName lastName accountNumber",
-        "User"
+        }
       );
 
       if (!data) {
@@ -131,6 +107,43 @@ router.post(
           "No requests with this account number"
         );
       }
+
+      res.status(204).json({});
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  "/delete",
+  checkBody,
+  isConnection,
+  async (req: RequestWithAccountNumber, res, next) => {
+    try {
+      const { accountNumber: accountNumberToDelete } = req.body;
+      const { accountNumber } = req;
+
+      if (!accountNumberToDelete) {
+        throw createCustomError(
+          "BadRequestError",
+          "Account number to delete is a mandatory field"
+        );
+      }
+
+      const accountToDeleteId = await User.findOne(
+        { accountNumber: accountNumberToDelete },
+        { _id: 1 }
+      );
+
+      await User.findOneAndUpdate(
+        { accountNumber },
+        {
+          $pull: {
+            connections: accountToDeleteId?._id,
+          },
+        }
+      );
 
       res.status(204).json({});
     } catch (error) {
