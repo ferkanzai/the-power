@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { isAlreadyConnection } from "../middlewares/connections";
 import { checkBody } from "../middlewares/utils";
-import User, { UserRequestWithAccountNumber } from "../models/User";
+import User from "../models/User";
 import { RequestWithAccountNumber } from "../types/app";
 import { createCustomError } from "../utils";
 
