@@ -132,9 +132,7 @@ router.post(
         );
       }
 
-      res
-        .status(200)
-        .json({ success: true, data: { connections: data?.connections } });
+      res.status(204).json({});
     } catch (error) {
       next(error);
     }
