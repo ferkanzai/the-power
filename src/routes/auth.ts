@@ -15,18 +15,6 @@ const router = Router();
 
 router.post("/signup", checkBody, async (req, res, next) => {
   try {
-    if (
-      !req.body.age ||
-      !req.body.firstName ||
-      !req.body.lastName ||
-      !req.body.initialBalance
-    ) {
-      throw createCustomError(
-        "BadRequestError",
-        "Age, first name, last name and initial balance are mandatory fields"
-      );
-    }
-
     const password = generateRandomPassword();
 
     const newUser = {
@@ -54,13 +42,6 @@ router.post("/signup", checkBody, async (req, res, next) => {
 
 router.post("/signin", checkBody, async (req, res, next) => {
   try {
-    if (!req.body.accountNumber || !req.body.password) {
-      throw createCustomError(
-        "BadRequestError",
-        "Account number and password are mandatory fields"
-      );
-    }
-
     const user = await User.findOne({
       accountNumber: req.body.accountNumber,
     });

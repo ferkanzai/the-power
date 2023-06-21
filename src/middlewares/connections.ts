@@ -13,10 +13,7 @@ export const isConnection = async (
     const { accountNumber: accountNumberToInteractWith } = req.body;
 
     if (Number(accountNumber) === Number(accountNumberToInteractWith)) {
-      throw createCustomError(
-        "ForbiddenError",
-        "This is your account number"
-      );
+      throw createCustomError("ForbiddenError", "This is your account number");
     }
 
     const resultToAdd = await User.findOne(

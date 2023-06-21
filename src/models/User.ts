@@ -1,5 +1,5 @@
 import { JWTPayload } from "jose";
-import { Schema, Types, model } from "mongoose";
+import { Document, Schema, Types, model } from "mongoose";
 
 export interface User {
   accountNumber: number;
