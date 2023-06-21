@@ -6,9 +6,9 @@
   - [x] You will create user in database will this information and create a 10 digit random account number.
   - [x] Due to security reasons you will create a 14 digit user password which contains number, letters and special characters.
 - [ ] Users should only be able to make transactions or add connections only after login.
-- [ ] Users should be able to send and approve connection requests.
+- [x] Users should be able to send and approve connection requests.
 - [x] Except the create user and login route, all other routes should use authentication, use can use bearer tokens which are at most valid for 15 mins.
-- [ ] Users should have the ability to add connections using someone's bank account number.
+- [x] Users should have the ability to add connections using someone's bank account number.
 - [x] User should be able to see the name, age and bank account number of all their connections in a list.
 - [ ] Users can remove a connection from their account.
 - [ ] Users can send and receive money to accounts which are there connection. Each transaction should be in the database.

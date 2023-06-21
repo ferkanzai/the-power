@@ -53,15 +53,10 @@ router.post(
         );
       }
 
-      const documentToAdd = await User.findOne(
-        {
-          accountNumber: accountNumberToAdd,
-        },
-        { _id: 1 }
-      );
+      const documentToAdd = await User.findOne({ accountNumber }, { _id: 1 });
 
       const result = await User.findOneAndUpdate(
-        { accountNumber },
+        { accountNumber: accountNumberToAdd },
         {
           $addToSet: {
             requests: documentToAdd?._id,
@@ -78,12 +73,7 @@ router.post(
         throw createCustomError("NotFoundError");
       }
 
-      res.status(200).json({
-        success: true,
-        data: {
-          requests: result.requests,
-        },
-      });
+      res.status(204).json({});
     } catch (error) {
       next(error);
     }
@@ -118,23 +108,8 @@ router.post(
         { _id: 1 }
       );
 
-      const requests: { requests: UserRequestWithAccountNumber[] } | null =
-        await User.findOne(
-          { accountNumber, requests: { $in: [accountToAddId?._id] } },
-          { requests: 1, _id: 0 }
-        ).populate("requests", "accountNumber -_id", "User", {
-          accountNumber: accountNumberToAccept,
-        });
-
-      if (!requests) {
-        throw createCustomError(
-          "NotFoundError",
-          "No requests with this account number"
-        );
-      }
-
       const data = await User.findOneAndUpdate(
-        { accountNumber },
+        { accountNumber, requests: { $in: [accountToAddId?._id] } },
         {
           $addToSet: {
             connections: accountToAddId?._id,
@@ -143,14 +118,19 @@ router.post(
             requests: accountToAddId?._id,
           },
         },
-        { new: true }
+        { new: true, projection: { requests: 1, _id: 0 } }
       ).populate(
         "connections",
         "-_id age firstName lastName accountNumber",
         "User"
       );
 
-      console.log(data);
+      if (!data) {
+        throw createCustomError(
+          "NotFoundError",
+          "No requests with this account number"
+        );
+      }
 
       res
         .status(200)

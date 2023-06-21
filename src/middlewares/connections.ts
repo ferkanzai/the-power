@@ -12,21 +12,27 @@ export const isAlreadyConnection = async (
     const { accountNumber } = req;
     const { accountNumber: accountNumberToAdd } = req.body;
 
-    const result = await User.findOne({ accountNumber }, { connections: 1 });
     const resultToAdd = await User.findOne(
       { accountNumber: accountNumberToAdd },
       { _id: 1 }
     );
 
-    if (!result || !resultToAdd) {
-      throw createCustomError("NotFoundError", "User or connection not found");
+    if (!resultToAdd) {
+      throw createCustomError(
+        "NotFoundError",
+        "Connection request account not found"
+      );
     }
 
-    if (
-      result.connections
-        .map((con) => con.toString())
-        .includes(resultToAdd._id.toString())
-    ) {
+    const result = await User.findOne(
+      {
+        accountNumber,
+        connections: { $in: [resultToAdd._id] },
+      },
+      { connections: 1 }
+    );
+
+    if (result) {
       throw createCustomError(
         "ForbiddenError",
         "You are already connected with this user"
