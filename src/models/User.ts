@@ -14,9 +14,9 @@ export interface User {
   roles: Roles[];
 }
 
-export type UserRequestWithAccountNumber = {
+export type AccountNumberWithConnections = {
   accountNumber: number;
-  _id: Types.ObjectId;
+  connections: { accountNumber: number }[];
 };
 
 type Roles = "admin" | "user";

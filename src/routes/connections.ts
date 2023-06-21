@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isConnection } from "../middlewares/connections";
+import { isConnection, isMyConnection } from "../middlewares/connections";
 import { checkBody } from "../middlewares/utils";
 import User from "../models/User";
 import { RequestWithAccountNumber } from "../types/app";
@@ -33,7 +33,7 @@ router.get("/all", async (req: RequestWithAccountNumber, res, next) => {
 router.post(
   "/add",
   checkBody,
-  isConnection,
+  isMyConnection,
   async (req: RequestWithAccountNumber, res, next) => {
     try {
       const { accountNumber: accountNumberToAdd } = req.body;

@@ -1,4 +1,7 @@
+import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
 import { Document, Types } from "mongoose";
+import { join } from "path";
+import { TransactionWithAccounts } from "../models/Transaction";
 import { SanitizedUser, UserModel } from "../models/User";
 import { ErrnoException } from "../types/app";
 
@@ -77,3 +80,37 @@ export const sanitizeUser = (
   } as const);
 
 export const secret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET);
+
+export const accountInConnections = (
+  account: number,
+  connections: number[]
+) => {
+  return connections.includes(account);
+};
+
+export const saveTransactionToFile = (transaction: TransactionWithAccounts) => {
+  const path = join(__dirname, "../../transactions");
+  const filename = join(path, "transactions.csv");
+
+  const { amount, sender, receiver, createdAt } = transaction;
+
+  if (!existsSync(path)) {
+    mkdirSync(path, { recursive: true });
+  }
+
+  if (!existsSync(filename)) {
+    writeFileSync(filename, "Sender,Receiver,Amount,TimeStamp\n");
+  }
+  // 12-06-21 11:00:12AM
+
+  appendFileSync(
+    filename,
+    `${sender},${receiver},${amount},${createdAt.toISOString()}\n`
+  );
+};
+
+export const calculateCommission = (amount: number) => {
+  const commission = amount < 1000 ? amount * 0.01 : amount * 0.005;
+
+  return commission.toFixed(2);
+};
