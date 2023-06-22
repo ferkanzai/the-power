@@ -1,0 +1,1360 @@
+{
+	"info": {
+		"_postman_id": "e4e46d75-6696-4ce9-b2ca-a2a7a0ad8a4a",
+		"name": "the-power",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sign in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"pm.environment.set(\"token\", jsonData.data?.token.split(\" \")[1])"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "// {\n//   \"accountNumber\": 291965246,\n//   \"password\": \"`5X.4#S,!L4V70\"\n// }\n// {\n//   \"accountNumber\": 1488511782,\n//   \"password\": \"?ONXPOC^+P)Xzv\"\n// }\n{\n  \"accountNumber\": 7239401524,\n  \"password\": \"xFp4*=HUTkW^+c\"\n}\n// {\n//   \"accountNumber\": 3937873215,\n//   \"password\": \"cK6RHfMzX=shrk\"\n// }\n// {\n//   \"accountNumber\": 600850222,\n//   \"password\": \"r(m|^7i)&9p6Uv\"\n// }\n// {\n//   \"accountNumber\": 6841945336,\n//   \"password\": \"~b[I:Jmb)([QNS\"\n// }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/auth/signin",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Correct",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountNumber\": 7239401524,\n    \"password\": \"xFp4*=HUTkW^+c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/auth/signin",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "524"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"20c-Ad0jcYPfJTzCaKfg2TxXdNS2djg\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:43:26 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"accountNumber\": 7239401524,\n        \"age\": 34,\n        \"balance\": 7267.750000000001,\n        \"firstName\": \"Fernando\",\n        \"lastName\": \"Carmona\",\n        \"roles\": [\n            \"user\",\n            \"admin\"\n        ],\n        \"token\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImFjY291bnROdW1iZXIiOjcyMzk0MDE1MjQsImFnZSI6MzQsImJhbGFuY2UiOjcyNjcuNzUwMDAwMDAwMDAxLCJmaXJzdE5hbWUiOiJGZXJuYW5kbyIsImxhc3ROYW1lIjoiQ2FybW9uYSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdfSwiaWF0IjoxNjg3Mzk0NjA2LCJpc3MiOiJmZXJjYXJtb25hLmRldiIsImV4cCI6MTY4NzM5NTUwNn0.Vs86sUXGn1WOylSDpigBdKqKf3xWaG8ul0GSamJgVRc\"\n    }\n}"
+				},
+				{
+					"name": "Mandatory fields",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\n//   \"accountNumber\": 291965246,\n//   \"password\": \"`5X.4#S,!L4V70\"\n// }\n// {\n//   \"accountNumber\": 1488511782,\n//   \"password\": \"?ONXPOC^+P)Xzv\"\n// }\n{\n  \"accountNumber\": 7239401524\n}\n// {\n//   \"accountNumber\": 3937873215,\n//   \"password\": \"cK6RHfMzX=shrk\"\n// }\n// {\n//   \"accountNumber\": 600850222,\n//   \"password\": \"r(m|^7i)&9p6Uv\"\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/auth/signin",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "87"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"57-m4pyql8EFMPcLCJtFhif7zgeJkY\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:46:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"info\": {\n        \"message\": \"Account number and password are mandatory fields\"\n    }\n}"
+				},
+				{
+					"name": "Empty body",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\n//   \"accountNumber\": 291965246,\n//   \"password\": \"`5X.4#S,!L4V70\"\n// }\n// {\n//   \"accountNumber\": 1488511782,\n//   \"password\": \"?ONXPOC^+P)Xzv\"\n// }\n{\n  \"accountNumber\": 7239401524,\n  \"password\": \"xFp4*=HUTkW^+c\"\n}\n// {\n//   \"accountNumber\": 3937873215,\n//   \"password\": \"cK6RHfMzX=shrk\"\n// }\n// {\n//   \"accountNumber\": 600850222,\n//   \"password\": \"r(m|^7i)&9p6Uv\"\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/auth/signin",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "61"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3d-z97oP8EGr/rgK6P5aokIZOmj/lc\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:46:50 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"info\": {\n        \"message\": \"Body can not be empty!\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Sign up",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Fernando\",\n    \"lastName\": \"Alonso\",\n    \"initialBalance\": \"14050\",\n    \"age\": 41\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/auth/signup",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Correct",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Lucía\",\n    \"lastName\": \"Navarro\",\n    \"initialBalance\": \"50\",\n    \"age\": 13\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/auth/signup",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "161"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"a1-sA3l2vZyxiqGbp1NMGcFemrIhO8\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:54:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"accountNumber\": 6841945336,\n        \"age\": 13,\n        \"balance\": 50,\n        \"firstName\": \"Lucía\",\n        \"lastName\": \"Navarro\",\n        \"roles\": [\n            \"user\"\n        ],\n        \"password\": \"~b[I:Jmb)([QNS\"\n    }\n}"
+				},
+				{
+					"name": "Missing fields",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Lucía\",\n    \"lastName\": \"Navarro\",\n    \"age\": 13\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/auth/signup",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "106"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"6a-zrpl3mu6tkyYjO/ZDL5IPEBcJfg\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:54:34 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"info\": {\n        \"message\": \"Age, first name, last name and initial balance are mandatory fields\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Ping",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/ping",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all connections",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/connections/all",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"connections",
+						"all"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Correct",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/connections/all",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"connections",
+								"all"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "283"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"11b-o+UKffedToHcgx0JOZC4uEJNDg8\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:53:25 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"connections\": [\n            {\n                \"age\": 41,\n                \"firstName\": \"Fernando\",\n                \"lastName\": \"Alonso\",\n                \"accountNumber\": 291965246\n            },\n            {\n                \"age\": 47,\n                \"firstName\": \"Ronnie\",\n                \"lastName\": \"O'Sullivan\",\n                \"accountNumber\": 600850222\n            },\n            {\n                \"age\": 28,\n                \"firstName\": \"Esther\",\n                \"lastName\": \"Mellado\",\n                \"accountNumber\": 3937873215\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get all requests",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/requests/all",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"requests",
+						"all"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Correct",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/requests/all",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"requests",
+								"all"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "116"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"74-ONexeuX+j78r+YpMyKVnoV1o1dU\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:55:30 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"requests\": [\n            {\n                \"age\": 11,\n                \"firstName\": \"Lisa\",\n                \"lastName\": \"Simpson\",\n                \"accountNumber\": 1488511782\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Add connection",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountNumber\": 291965246\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/connections/add",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"connections",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm connection",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountNumber\": 3937873215\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/connections/accept",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"connections",
+						"accept"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete connection",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountNumber\": 291965246\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/connections/delete",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"connections",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send money",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountNumber\": 291965246,\n    \"amount\": 671\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/transactions/send",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"transactions",
+						"send"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Forbidden - connection",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountNumber\": 3937873215,\n    \"amount\": 999\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/transactions/send",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"transactions",
+								"send"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "104"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"68-5mxip7OFUdW9cJqnD+ijTOlT6DQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:44:34 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"info\": {\n        \"message\": \"Both users must be connected to each other to perform this action\"\n    }\n}"
+				},
+				{
+					"name": "Forbidden - amount",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountNumber\": 291965246,\n    \"amount\": 999999\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/transactions/send",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"transactions",
+								"send"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "163"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"a3-VC6Hi4uxUWvOZF2tHcJPpE6Ul8Q\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:45:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"info\": {\n        \"message\": \"You don't have enough money to make this transaction. Your balance is 7267.75. You need 1004998.99 to make this transaction.\"\n    }\n}"
+				},
+				{
+					"name": "Correct",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountNumber\": 3937873215,\n    \"amount\": 20.79\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/transactions/send",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"transactions",
+								"send"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "137"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"89-zOnKLqCSOBYzi2cO/QYdTlNukQo\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:52:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"transaction\": {\n            \"amount\": 20.79,\n            \"createdAt\": \"2023-06-22T00:52:56.821Z\",\n            \"receiver\": 3937873215,\n            \"sender\": 7239401524\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Received transactions",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/transactions/received",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"transactions",
+						"received"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Correct",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/transactions/received",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"transactions",
+								"received"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "177"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"b1-ZtVbIPNtQWc6ryIu17LjD6Jgrbc\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:44:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"transactions\": [\n            {\n                \"amount\": 4500,\n                \"sender\": {\n                    \"firstName\": \"Fernando\",\n                    \"lastName\": \"Alonso\",\n                    \"accountNumber\": 291965246\n                },\n                \"createdAt\": \"2023-06-22T00:25:56.486Z\"\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Sent transactions",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/transactions/sent",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"transactions",
+						"sent"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Correct",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/transactions/sent",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"transactions",
+								"sent"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "588"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"24c-seSLJXoIIHbmXLv3HoyvwJLzH+w\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:43:47 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"transactions\": [\n            {\n                \"amount\": 45,\n                \"receiver\": {\n                    \"firstName\": \"Fernando\",\n                    \"lastName\": \"Alonso\",\n                    \"accountNumber\": 291965246\n                },\n                \"createdAt\": \"2023-06-22T00:19:13.499Z\"\n            },\n            {\n                \"amount\": 400,\n                \"receiver\": {\n                    \"firstName\": \"Ronnie\",\n                    \"lastName\": \"O'Sullivan\",\n                    \"accountNumber\": 600850222\n                },\n                \"createdAt\": \"2023-06-22T00:36:38.612Z\"\n            },\n            {\n                \"amount\": 90,\n                \"receiver\": {\n                    \"firstName\": \"Ronnie\",\n                    \"lastName\": \"O'Sullivan\",\n                    \"accountNumber\": 600850222\n                },\n                \"createdAt\": \"2023-06-22T00:36:54.252Z\"\n            },\n            {\n                \"amount\": 190,\n                \"receiver\": {\n                    \"firstName\": \"Fernando\",\n                    \"lastName\": \"Alonso\",\n                    \"accountNumber\": 291965246\n                },\n                \"createdAt\": \"2023-06-22T00:37:06.555Z\"\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Commisions earnt",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (pm.environment.get(\"port\")) {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\") + \":\" + pm.environment.get(\"port\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"} else {",
+							"    let FINAL_BASE_URL = pm.environment.get(\"host\")",
+							"    pm.environment.set('FINAL_BASE_URL', FINAL_BASE_URL)",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FINAL_BASE_URL}}/transactions/commisions",
+					"host": [
+						"{{FINAL_BASE_URL}}"
+					],
+					"path": [
+						"transactions",
+						"commisions"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Unauthorized",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/transactions/commisions",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"transactions",
+								"commisions"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "58"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3a-uEYxVfprRsdgNLXntWt5LAu8U7M\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:41:13 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"info\": {\n        \"message\": \"Admin role required\"\n    }\n}"
+				},
+				{
+					"name": "Correct",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/transactions/commisions",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"transactions",
+								"commisions"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "49"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"31-lisUtXqis87jJ7NMj5OufCAAFZw\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 22 Jun 2023 00:43:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"totalCommision\": 160.07\n    }\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
