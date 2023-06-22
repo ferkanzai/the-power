@@ -31,3 +31,7 @@ Or for local development:
 ```bash
 npm run dev
 ```
+
+## Postman collection
+
+All the queries in the collection are ready to work out of the box with the proper authorization token. You just need to use the `/auth/signin` endpoint and the token there will be propagated to the rest of the queries.
