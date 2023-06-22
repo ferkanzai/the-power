@@ -7,8 +7,7 @@
     "dev": "tsx watch ./src/index.ts",
     "start": "npm run build && node .",
     "build": "tsc",
-    "test": "jest",
-    "testAll": "jest --watchAll"
+    "deploy": "npm i && npm start"
   },
   "keywords": [
     "typescript",
