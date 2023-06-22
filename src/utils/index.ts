@@ -101,7 +101,6 @@ export const saveTransactionToFile = (transaction: TransactionWithAccounts) => {
   if (!existsSync(filename)) {
     writeFileSync(filename, "Sender,Receiver,Amount,TimeStamp\n");
   }
-  // 12-06-21 11:00:12AM
 
   appendFileSync(
     filename,
