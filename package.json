@@ -5,9 +5,9 @@
   "main": "./dist/index.js",
   "scripts": {
     "dev": "tsx watch ./src/index.ts",
-    "start": "npm run build && node .",
+    "start": "node .",
     "build": "tsc",
-    "deploy": "npm i && npm start"
+    "deploy": "npm i && npm run build"
   },
   "keywords": [
     "typescript",
