@@ -4,6 +4,8 @@ const host = process.env.DB_HOST || "localhost";
 
 connect(`${host}`, {
   dbName: "the-power",
+  minPoolSize: 5,
+  maxPoolSize: 10,
 })
   .then(() => console.info("> db connected!"))
   .catch((error) => {

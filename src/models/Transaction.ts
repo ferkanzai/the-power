@@ -1,5 +1,4 @@
 import { Document, Schema, Types, model } from "mongoose";
-import { calculateCommission } from "../utils";
 
 export interface Transaction extends Document {
   amount: number;
@@ -8,6 +7,7 @@ export interface Transaction extends Document {
   receiver: Types.ObjectId;
   updatedAt: Date;
   commision: number;
+  completed: boolean;
 }
 
 export type TransactionWithAccounts = Pick<
@@ -37,24 +37,28 @@ export const TransactionSchema = new Schema<Transaction>(
     commision: {
       type: Number,
     },
+    completed: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
 
-TransactionSchema.post("save", async function (doc) {
-  const { sender, receiver, amount } = doc;
-  const commision = calculateCommission(amount);
-  const amountToDeduct = amount + commision;
+// TransactionSchema.post("save", async function (doc) {
+//   const { sender, receiver, amount } = doc;
+//   const commision = calculateCommission(amount);
+//   const amountToDeduct = amount + commision;
 
-  await this.updateOne({ commision });
+//   await this.updateOne({ commision });
 
-  await this.$model("User").findByIdAndUpdate(sender, {
-    $inc: { balance: -amountToDeduct },
-  });
+//   await this.$model("User").findByIdAndUpdate(sender, {
+//     $inc: { balance: -amountToDeduct },
+//   });
 
-  await this.$model("User").findByIdAndUpdate(receiver, {
-    $inc: { balance: amount },
-  });
-});
+//   await this.$model("User").findByIdAndUpdate(receiver, {
+//     $inc: { balance: amount },
+//   });
+// });
 
 export default model<Transaction>("Transaction", TransactionSchema);

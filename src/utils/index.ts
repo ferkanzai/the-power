@@ -113,3 +113,5 @@ export const calculateCommission = (amount: number) => {
 
   return Number(commission.toFixed(2));
 };
+
+export const specialAccountNumber = 6266092335 as const;

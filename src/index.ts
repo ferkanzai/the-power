@@ -2,7 +2,7 @@ import "dotenv/config";
 import app from "./app";
 import "./config/db";
 
-const requiredEnvVars = ["ACCESS_TOKEN_SECRET", "DB_HOST"];
+const requiredEnvVars = ["ACCESS_TOKEN_SECRET", "DB_HOST", "REDIS_HOST", "REDIS_PORT"];
 
 const { PORT = 3000 } = process.env;
 

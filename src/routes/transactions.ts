@@ -1,12 +1,14 @@
 import { Router } from "express";
+import { transactionsQueue } from "../config/queue";
+import { isAdmin } from "../middlewares/auth";
 import { isTwoWayConnection } from "../middlewares/connections";
 import { canMakeTransaction } from "../middlewares/transactions";
 import { checkBody } from "../middlewares/utils";
 import Transaction from "../models/Transaction";
 import User from "../models/User";
 import { RequestWithAccountNumber } from "../types/app";
-import { createCustomError, saveTransactionToFile } from "../utils";
-import { isAdmin } from "../middlewares/auth";
+import { createCustomError } from "../utils";
+import { connect, connection } from "mongoose";
 
 const router = Router();
 
@@ -33,32 +35,23 @@ router.post(
         throw createCustomError("NotFoundError", "Account not found");
       }
 
-      const transaction = await Transaction.create({
-        amount,
-        receiver: receiverDb?._id,
-        sender: senderDb?._id,
-      });
+      if (connection.readyState !== 1) {
+        connect(process.env.DB_HOST as string, {
+          dbName: "the-power",
+        });
+      }
 
-      const transactionToFile = {
-        amount: req.body.amount,
-        createdAt: transaction.createdAt,
-        receiver: receiver as number,
-        sender: sender as number,
-      };
-
-      saveTransactionToFile(transactionToFile);
-
-      res.status(200).json({
-        success: true,
-        data: {
-          transaction: {
-            amount,
-            createdAt: transaction.createdAt,
-            receiver,
-            sender,
-          },
+      await transactionsQueue.add(
+        "transactions",
+        {
+          sender: senderDb._id,
+          receiver: receiverDb._id,
+          amount,
         },
-      });
+        { delay: 60000 }
+      );
+
+      res.status(204).json({});
     } catch (error) {
       next(error);
     }
