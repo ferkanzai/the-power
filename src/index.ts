@@ -17,6 +17,16 @@ if (missingEnvVars.length > 0) {
   process.exit(1);
 }
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`> Server running on port ${PORT} 🚀`);
 });
+
+
+const closeServer = () => {
+  server.closeAllConnections();
+  server.closeIdleConnections();
+  server.close();
+};
+
+process.on("SIGINT", closeServer);
+process.on("SIGTERM", closeServer);

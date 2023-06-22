@@ -33,8 +33,6 @@ router.post(
         throw createCustomError("NotFoundError", "Account not found");
       }
 
-      console.log(senderDb, receiverDb);
-
       const transaction = await Transaction.create({
         amount,
         receiver: receiverDb?._id,
@@ -77,7 +75,7 @@ router.get("/received", async (req: RequestWithAccountNumber, res, next) => {
       {
         receiver: user?._id,
       },
-      { _id: 0, __v: 0, updatedAt: 0, commision: 0 }
+      { _id: 0, __v: 0, updatedAt: 0, commision: 0, receiver: 0 }
     ).populate("sender", "-_id firstName lastName accountNumber");
 
     if (!transactions) {
@@ -108,7 +106,7 @@ router.get("/sent", async (req: RequestWithAccountNumber, res, next) => {
       {
         sender: user?._id,
       },
-      { _id: 0, __v: 0, updatedAt: 0, commision: 0 }
+      { _id: 0, __v: 0, updatedAt: 0, commision: 0, sender: 0 }
     ).populate("receiver", "-_id firstName lastName accountNumber");
 
     if (!transactions) {
@@ -146,7 +144,7 @@ router.get("/commisions", isAdmin, async (_req, res, next) => {
     res.status(200).json({
       success: true,
       data: {
-        totalCommision: commisions[0].totalCommision,
+        totalCommision: commisions[0]?.totalCommision ?? 0,
       },
     });
   } catch (error) {

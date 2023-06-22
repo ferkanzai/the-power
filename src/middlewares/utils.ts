@@ -42,7 +42,7 @@ export const checkBody = (req: Request, _res: Response, next: NextFunction) => {
       );
     }
 
-    if (!req.body.accountNumber) {
+    if (!req.body.accountNumber && !originalUrl.includes("auth")) {
       throw createCustomError(
         "BadRequestError",
         "Account number is a mandatory field"

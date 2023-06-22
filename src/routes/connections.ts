@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { isConnection, isMyConnection } from "../middlewares/connections";
+import {
+  isConnectionAlready,
+  isRequest,
+  isUserInConnections,
+} from "../middlewares/connections";
 import { checkBody } from "../middlewares/utils";
 import User from "../models/User";
 import { RequestWithAccountNumber } from "../types/app";
@@ -33,7 +37,7 @@ router.get("/all", async (req: RequestWithAccountNumber, res, next) => {
 router.post(
   "/add",
   checkBody,
-  isMyConnection,
+  isUserInConnections,
   async (req: RequestWithAccountNumber, res, next) => {
     try {
       const { accountNumber: accountNumberToAdd } = req.body;
@@ -71,7 +75,8 @@ router.post(
 router.post(
   "/accept",
   checkBody,
-  isConnection,
+  isRequest,
+  isConnectionAlready,
   async (req: RequestWithAccountNumber, res, next) => {
     try {
       const { accountNumber: accountNumberToAccept } = req.body;
@@ -84,29 +89,21 @@ router.post(
         );
       }
 
-      const accountToAddId = await User.findOne(
+      const account = await User.findOne({ accountNumber }, { _id: 1 });
+
+      const accountToAccept = await User.findOne(
         { accountNumber: accountNumberToAccept },
         { _id: 1 }
       );
 
-      const data = await User.findOneAndUpdate(
-        { accountNumber, requests: { $in: [accountToAddId?._id] } },
-        {
-          $addToSet: {
-            connections: accountToAddId?._id,
-          },
-          $pull: {
-            requests: accountToAddId?._id,
-          },
-        }
+      await User.updateOne(
+        { accountNumber },
+        { $pull: { requests: accountToAccept?._id } }
       );
-
-      if (!data) {
-        throw createCustomError(
-          "NotFoundError",
-          "No requests with this account number"
-        );
-      }
+      await User.updateOne(
+        { accountNumber: accountNumberToAccept },
+        { $addToSet: { connections: account?._id } }
+      );
 
       res.status(204).json({});
     } catch (error) {
@@ -118,7 +115,7 @@ router.post(
 router.post(
   "/delete",
   checkBody,
-  isConnection,
+  isUserInConnections,
   async (req: RequestWithAccountNumber, res, next) => {
     try {
       const { accountNumber: accountNumberToDelete } = req.body;

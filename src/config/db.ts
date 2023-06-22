@@ -2,7 +2,7 @@ import { connect, connection } from "mongoose";
 
 const host = process.env.DB_HOST || "localhost";
 
-connect(`mongodb://${host}`, {
+connect(`${host}`, {
   dbName: "the-power",
 })
   .then(() => console.info("> db connected!"))
